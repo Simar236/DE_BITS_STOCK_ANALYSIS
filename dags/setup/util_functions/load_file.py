@@ -17,7 +17,6 @@ def load_csv_files(path: str, table_name: str):
     combined_dataframe = pd.concat(all_dataframes, ignore_index=True)
     print("Combined DataFrame:")
     print(combined_dataframe)
-
     insert_dataframe_postgres(combined_dataframe, table_name)
 
 def insert_dataframe_postgres(data, table_name):
@@ -26,7 +25,7 @@ def insert_dataframe_postgres(data, table_name):
     cursor = conn.cursor()
     
     
-    for row in data.iterrows():
+    for index, row in data.iterrows():
         sql = f"""
         INSERT INTO {table_name} (date, open, high, low, close, adj_close, volume, file_name)
         VALUES ('{row['Date']}', {row['Open']}, {row['High']}, {row['Low']}, {row['Close']}, {row['Adj Close']}, {row['Volume']}, '{row['file_name']}');

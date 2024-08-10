@@ -9,20 +9,26 @@ def get_end_date(date_str):
     
     return next_year_date_str
 
-def insert_HW_value(table_name,value):
+def insert_HW_value(table_name,value,update_flag):
     hook = PostgresHook(postgres_conn_id="postgres")
     
     conn = hook.get_conn()
     cursor = conn.cursor()
     
-    # sql = f"""
-    # INSERT INTO {table_name} (date)
-    # VALUES ('{value}');
-    # """
-    sql = f"""
+    if update_flag:
+        
+        print("update")
+        sql = f"""
             UPDATE {table_name}
             SET date = '{value}';
-    """
+        """
+    else:
+        print("insert")
+        sql = f"""
+            INSERT INTO {table_name} (date)
+            VALUES ('{value}');
+        """
+    print(value)
     cursor.execute(sql)
     conn.commit()
     cursor.close()
@@ -39,5 +45,5 @@ def get_HW_value(table_name, **kwargs):
     
     cursor.close()
     connection.close()
-
+    print(result[0])
     kwargs['ti'].xcom_push(key='HW_value', value=str(result[0]))
