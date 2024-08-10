@@ -2,10 +2,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from kafka import KafkaConsumer
 import json
-import logging
 from datetime import datetime
-
-logging.basicConfig(level=logging.INFO)
 
 def consume_data_kafka():
     topic = 'test_stock_topic'
@@ -18,11 +15,8 @@ def consume_data_kafka():
         group_id='kafka_consumer_group'
     )
 
-    logging.info(f"Consuming messages from topic: {topic}")
     
     for message in consumer:
-        logging.info(f"Received message: {message.value}")
-        
         print(message.value)
 
     consumer.close()
