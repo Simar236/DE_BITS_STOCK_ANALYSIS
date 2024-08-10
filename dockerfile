@@ -1,4 +1,5 @@
-FROM apache/airflow:2.5.1
+# Use an official Apache Airflow image with Python 3.8
+FROM apache/airflow:2.5.1-python3.8
 
 # Switch to root user
 USER root
@@ -14,3 +15,13 @@ ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Switch back to the airflow user
 USER airflow
+
+# If you need to install PySpark or other dependencies, you can do so here
+# RUN pip install pyspark==3.4.0
+
+# Copy your DAGs and any other necessary files
+# COPY ./dags /opt/airflow/dags
+# COPY ./requirements.txt /opt/airflow/requirements.txt
+
+# Install any additional requirements if necessary
+# RUN pip install --no-cache-dir -r /opt/airflow/requirements.txt
