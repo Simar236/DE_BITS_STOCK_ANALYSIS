@@ -20,8 +20,9 @@ def produce_data_kafka(data):
             "high": record[3],
             "low": record[4],
             "close": record[5],
-            "volume": record[6],
-            "stock_symbol": record[7]
+            "adj_close": record[6],
+            "volume": record[7],
+            "stock_symbol": record[8]
         }
         producer.send(topic, value=json_record)
         
