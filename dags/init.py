@@ -65,9 +65,31 @@ with DAG('setup', start_date=datetime(2024, 1, 1),
     #     op_kwargs={'path':'dags/data', 'table_name': "stock_data_init"},
     #     provide_context=True,
     # )
+    
+    
+    create_table_moving_average= PostgresOperator(
+        task_id="create_table_moving_average",
+        postgres_conn_id='postgres',
+        sql='''
+CREATE TABLE stock_moving_averages (
+    id SERIAL PRIMARY KEY,
+    stock_symbol VARCHAR(10) NOT NULL,
+    window_start TIMESTAMP NOT NULL,
+    window_end TIMESTAMP NOT NULL,
+    moving_avg_close DECIMAL(18, 6) NOT NULL,
+    record_count INTEGER,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+CREATE INDEX idx_stock_symbol ON stock_moving_averages(stock_symbol);
+CREATE INDEX idx_window_start ON stock_moving_averages(window_start);
+
+
+
+'''
+    )
  
     
-    get_HW_value
+    get_HW_value >> create_table_moving_average
     # create_table >> create_HW_table >> [load_csv_files , insert_HW_value] >> get_HW_value
 
     

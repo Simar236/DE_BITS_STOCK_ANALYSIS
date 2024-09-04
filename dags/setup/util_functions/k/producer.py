@@ -1,6 +1,6 @@
 import json
 from kafka import KafkaProducer
-
+import time
 def json_serializer(data):
     return json.dumps(data).encode('utf-8')
 
@@ -24,6 +24,7 @@ def produce_data_kafka(data):
             "volume": record[7],
             "stock_symbol": record[8]
         }
+        time.sleep(1)
         producer.send(topic, value=json_record)
         
     producer.flush()

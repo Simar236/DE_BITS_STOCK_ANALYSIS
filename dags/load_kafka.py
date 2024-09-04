@@ -16,7 +16,7 @@ def produce_kafka_data(table_name, **kwargs):
     hook = PostgresHook(postgres_conn_id='postgres')
     connection = hook.get_conn()
     cursor = connection.cursor()
-    query = f"SELECT * FROM {table_name} where date between '{value}' and '{new_HW_value}';"  
+    query = f"SELECT * FROM {table_name} where date between '{value}' and '{new_HW_value}' order by date;"  
     cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
@@ -27,7 +27,7 @@ def produce_kafka_data(table_name, **kwargs):
     
  
 with DAG('produce_kafka', start_date=datetime(2024, 1, 1), 
-    schedule_interval=None , catchup=False) as dag:
+    schedule_interval='0 */2 * * *' , catchup=False) as dag:
 
     
     get_HW_value = PythonOperator(
