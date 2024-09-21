@@ -60,7 +60,7 @@ x-airflow-common:
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
-    _PIP_ADDITIONAL_REQUIREMENTS: "kafka-python==2.0.2 pyspark"
+    _PIP_ADDITIONAL_REQUIREMENTS: "kafka-python==2.0.2 pyspark scikit-learn==1.0.2 pandas==1.5.3 numpy==1.22.0 joblib==1.1.0"
     JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags

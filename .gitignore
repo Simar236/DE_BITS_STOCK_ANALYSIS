@@ -4,3 +4,4 @@ dags/data/
 \logs
 \__pycache__
 dags/stock_yearly_data/
+dags/consolidated_stock_data/

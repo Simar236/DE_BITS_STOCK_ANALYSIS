@@ -4,7 +4,7 @@ from airflow.hooks.postgres_hook import PostgresHook
  
 from datetime import datetime
 
-from setup.util_functions.k.producer import produce_data_kafka
+from setup.util_functions.kafka_util.producer import produce_data_kafka
 from setup.util_functions.HW_util import get_HW_value,get_end_date, insert_HW_value
 
 
@@ -26,7 +26,7 @@ def produce_kafka_data(table_name, **kwargs):
     if result:
         produce_data_kafka(result)
         print("Data successfully pushed to Kafka.")
-        
+
     value=kwargs['ti'].xcom_push(key='new_HW_value', value=new_HW_value)
 
     
