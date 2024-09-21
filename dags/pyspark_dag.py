@@ -17,7 +17,6 @@ def process_file(file_path):
     process_stock_data(pd.read_csv(file_path))
     shutil.move(file_path,new_directory_name)
 
-# DAG definition
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,

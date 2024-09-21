@@ -6,23 +6,18 @@ from pyspark.sql.window import Window
 
 def process_stock_data(data):
     
-    # Initialize Spark session
     spark = SparkSession.builder \
         .appName("Stock Metrics Calculation") \
         .getOrCreate()
 
-    # Load data from CSV
     df = spark.createDataFrame(data)
 
     df = df.withColumn('date', F.col('date').cast('date'))
 
-    # Add a column to indicate the year
     df = df.withColumn('year', F.year(F.col('date')))
 
-    # Define window specification for stock_symbol and year
     window_spec = Window.partitionBy('stock_symbol', 'year')
 
-    # Apply window functions to get first/last close prices for cumulative return
     df = df.withColumn('first_close', F.first('close').over(window_spec)) \
         .withColumn('last_close', F.last('close').over(window_spec)) \
         .withColumn('annual_cumulative_return', 
@@ -31,7 +26,6 @@ def process_stock_data(data):
                     F.col('last_close') - F.col('first_close')) \
         .withColumn('last_traded_date', F.last('date').over(window_spec))
 
-    # Perform the aggregation for the annual insights
     aggregated_insights = df.groupBy('stock_symbol', 'year') \
         .agg(
             F.avg('close').alias('annual_avg_price'),

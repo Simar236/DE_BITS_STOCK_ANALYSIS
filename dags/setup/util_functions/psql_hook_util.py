@@ -5,14 +5,8 @@ def execute(query):
     hook = PostgresHook(postgres_conn_id="postgres")
     
     conn = hook.get_conn()
-    cursor = conn.cursor()
-    
-    # sql = f"""
-    # INSERT INTO {table_name} (date)
-    # VALUES ('{value}');
-    # """
-    sql = query
-    cursor.execute(sql)
+    cursor = conn.cursor()    
+    cursor.execute(query)
     conn.commit()
     cursor.close()
     conn.close()

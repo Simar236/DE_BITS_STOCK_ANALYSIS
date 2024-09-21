@@ -25,19 +25,13 @@ def insert_dataframe_postgres(data, table_name):
     cursor = conn.cursor()
     # list of dataframe col
     columns = list(data.columns)
+    print(columns)
     
     for index, row in data.iterrows():
         #columns string
         placeholders = ', '.join(['%s'] * len(columns))
-        
-        # Create the SQL statement
         sql = f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({placeholders})"
-        print(sql)
-        
-        # Extract the row values as a tuple
         row_values = tuple(row[col] for col in columns)
-        
-        # Execute the SQL query
         cursor.execute(sql, row_values)
     
     # Commit and close the connection
