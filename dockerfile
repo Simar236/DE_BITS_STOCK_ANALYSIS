@@ -16,8 +16,11 @@ ENV PATH=$JAVA_HOME/bin:$PATH
 # Switch back to the airflow user
 USER airflow
 
-# If you need to install PySpark or other dependencies, you can do so here
-# RUN pip install pyspark==3.4.0
+# # Upgrade pip
+# RUN pip install --upgrade pip
+
+# # Install dependencies
+# RUN pip install --no-cache-dir kafka-python==2.0.2 pyspark apache-airflow-providers-apache-spark apache-airflow-providers-celery
 
 # Copy your DAGs and any other necessary files
 # COPY ./dags /opt/airflow/dags

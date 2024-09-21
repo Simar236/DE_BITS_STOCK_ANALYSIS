@@ -118,6 +118,19 @@ services:
       retries: 5
     restart: always
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"  # Expose Grafana on port 3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin  # Default admin username
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Default admin password (you should change this)
+    volumes:
+      - grafana_data:/var/lib/grafana  # Persist data, dashboards, and settings
+    depends_on:
+      - postgres  # Add this if you're using PostgreSQL as a data source
+
   redis:
     image: redis:latest
     expose:
@@ -307,4 +320,6 @@ services:
         condition: service_completed_successfully
 
 volumes:
+  grafana_data:
+    driver: local
   postgres-db-volume:

@@ -23,15 +23,24 @@ def insert_dataframe_postgres(data, table_name):
     hook = PostgresHook(postgres_conn_id="postgres")
     conn = hook.get_conn()
     cursor = conn.cursor()
-    
+    # list of dataframe col
+    columns = list(data.columns)
     
     for index, row in data.iterrows():
-        sql = f"""
-        INSERT INTO {table_name} (date, open, high, low, close, adj_close, volume, file_name)
-        VALUES ('{row['Date']}', {row['Open']}, {row['High']}, {row['Low']}, {row['Close']}, {row['Adj Close']}, {row['Volume']}, '{row['file_name']}');
-        """
-        cursor.execute(sql)
+        #columns string
+        placeholders = ', '.join(['%s'] * len(columns))
+        
+        # Create the SQL statement
+        sql = f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({placeholders})"
+        print(sql)
+        
+        # Extract the row values as a tuple
+        row_values = tuple(row[col] for col in columns)
+        
+        # Execute the SQL query
+        cursor.execute(sql, row_values)
     
+    # Commit and close the connection
     conn.commit()
     cursor.close()
     conn.close()

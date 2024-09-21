@@ -3,3 +3,4 @@ dags/data/
 /logs
 \logs
 \__pycache__
+dags/stock_yearly_data/

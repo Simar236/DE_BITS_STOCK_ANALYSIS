@@ -1,7 +1,6 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.hooks.postgres_hook import PostgresHook
-# import functools
  
 from datetime import datetime
 
@@ -21,13 +20,19 @@ def produce_kafka_data(table_name, **kwargs):
     result = cursor.fetchall()
     cursor.close()
     connection.close()
-    produce_data_kafka(result)
+      
+    print(f"Number of records fetched: {len(result)}")
+
+    if result:
+        produce_data_kafka(result)
+        print("Data successfully pushed to Kafka.")
+        
     value=kwargs['ti'].xcom_push(key='new_HW_value', value=new_HW_value)
 
     
- 
+#   schedule_interval='0 */2 * * *'
 with DAG('produce_kafka', start_date=datetime(2024, 1, 1), 
-    schedule_interval='0 */2 * * *' , catchup=False) as dag:
+    schedule_interval='* * * * *', catchup=False) as dag:
 
     
     get_HW_value = PythonOperator(
