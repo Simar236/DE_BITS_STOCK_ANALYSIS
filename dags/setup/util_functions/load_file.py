@@ -15,8 +15,6 @@ def load_csv_files(path: str, table_name: str):
             print(f"Loaded {filename} into DataFrame.")
 
     combined_dataframe = pd.concat(all_dataframes, ignore_index=True)
-    print("Combined DataFrame:")
-    print(combined_dataframe)
     insert_dataframe_postgres(combined_dataframe, table_name)
 
 def insert_dataframe_postgres(data, table_name):

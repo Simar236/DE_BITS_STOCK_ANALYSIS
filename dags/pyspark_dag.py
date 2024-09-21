@@ -45,7 +45,6 @@ def process_file(file_path):
     print(file_path,new_directory_name)
     preprocess_stock_data(file_path)
     append_to_consolidated_csv(file_path)
-    print("ml")
     ml_model_process(consolidated_stock_data_file_path,file_path)
     process_stock_data(pd.read_csv(file_path))
     shutil.move(file_path,new_directory_name)
@@ -81,3 +80,7 @@ with DAG(
     )
 
     process_files_task
+    
+    # pre_process_files_task >> append_consolidated_file >> process_ml_model >> archive_yearly_file
+    # pre_process_files_task >> process_stock_data >> archive_yearly_file
+

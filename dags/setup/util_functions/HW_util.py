@@ -16,19 +16,15 @@ def insert_HW_value(table_name,value,update_flag):
     cursor = conn.cursor()
     
     if update_flag:
-        
-        print("update")
         sql = f"""
             UPDATE {table_name}
             SET date = '{value}';
         """
     else:
-        print("insert")
         sql = f"""
             INSERT INTO {table_name} (date)
             VALUES ('{value}');
         """
-    print(value)
     cursor.execute(sql)
     conn.commit()
     cursor.close()

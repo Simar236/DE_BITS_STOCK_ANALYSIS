@@ -40,7 +40,6 @@ def consume_and_save_to_file():
 
         else:
             print("No valid date found in the message.")
-    print("done!")
     consumer.close()
 
 
