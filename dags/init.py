@@ -69,6 +69,19 @@ with DAG('setup', start_date=datetime(2024, 1, 1),
                 '''
         )
     
+    create_predicted_stock_insight_table= PostgresOperator(
+            task_id="stock_annual_predicted_insights_table",
+            postgres_conn_id='postgres',
+            sql='''
+                    CREATE TABLE stock_annual_predicted_insights (
+                    id SERIAL PRIMARY KEY,
+                    stock_symbol VARCHAR(10) NOT NULL,
+                    predicted_year INTEGER NOT NULL,
+                    predicted_annual_cumulative_return NUMERIC
+                );
+                '''
+        )
+    
      
     # insert_HW_value = PythonOperator(
     #     task_id='insert_HW_value',

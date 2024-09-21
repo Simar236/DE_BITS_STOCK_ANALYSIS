@@ -5,6 +5,7 @@ import os
 import pandas as pd
 import shutil
 
+from setup.ml_util.ml import ml_model_process
 from setup.pyspark import process_stock_data
 
 stock_data_dir = 'dags/stock_yearly_data'
@@ -44,7 +45,9 @@ def process_file(file_path):
     print(file_path,new_directory_name)
     preprocess_stock_data(file_path)
     append_to_consolidated_csv(file_path)
-    # process_stock_data(pd.read_csv(file_path))
+    print("ml")
+    ml_model_process(consolidated_stock_data_file_path,file_path)
+    process_stock_data(pd.read_csv(file_path))
     shutil.move(file_path,new_directory_name)
 
 default_args = {
